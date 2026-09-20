@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="GREENWAY AI recommends healthier and safer student routes using an Environmental Exposure Budget." />
+  <title>GREENWAY AI | Environmental Route Planner</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23083139'/%3E%3Cpath d='M15 47C19 23 31 11 51 10 49 31 37 46 15 47Z' fill='%23bdf46a'/%3E%3Cpath d='m19 43 26-26' stroke='%23083139' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#workspace" aria-label="GREENWAY AI home"><span class="brand-mark">G</span><span>GREENWAY <b>AI</b></span></a>
+    <div class="prototype-chip"><span></span> Interactive prototype · District 7</div>
+    <button class="text-button" id="method-button">View scoring method</button>
+  </header>
+  <main id="workspace">
+    <section class="intro-row">
+      <div><p class="eyebrow">Environmental navigation for students</p><h1>A route should protect more than your time.</h1></div>
+      <p>GREENWAY AI compares travel time with pollution, heat, traffic, and flood risk—then adapts the choice to what you have already experienced today.</p>
+    </section>
+    <section class="app-shell">
+      <aside class="control-panel" aria-label="Route settings">
+        <div class="panel-heading"><span>01</span><div><h2>Plan the journey</h2><p>Try a scenario, then change what matters.</p></div></div>
+        <label class="location-field"><span>From</span><input value="Korea Global School" aria-label="Starting point" /></label>
+        <div class="connector-line"></div>
+        <label class="location-field"><span>To</span><input value="Phu My Hung, District 7" aria-label="Destination" /></label>
+        <fieldset><legend>Demo condition</legend><div class="scenario-buttons" id="scenario-buttons"></div></fieldset>
+        <fieldset><legend>Route priority</legend><div class="mode-buttons" id="mode-buttons"></div></fieldset>
+        <div class="preference-block">
+          <div class="range-heading"><label for="morning-exposure">Exposure already used today</label><output id="morning-output">28%</output></div>
+          <input id="morning-exposure" type="range" min="0" max="80" value="28" />
+          <label class="toggle-row"><span><b>Walking or cycling</b><small>Increase heat importance</small></span><input id="active-travel" type="checkbox" checked /></label>
+          <label class="select-row"><span>Heat sensitivity</span><select id="heat-sensitivity"><option value="0">Low</option><option value="1" selected>Medium</option><option value="2">High</option></select></label>
+          <label class="select-row"><span>Pollution avoidance</span><select id="pollution-avoidance"><option value="0">Low</option><option value="1" selected>Medium</option><option value="2">High</option></select></label>
+        </div>
+      </aside>
+      <section class="results-panel" aria-label="Recommended routes">
+        <div class="map-card">
+          <div class="map-head"><div><span class="overline">RECOMMENDED NOW</span><h2 id="best-route-name">Green Corridor</h2></div><div class="score-lockup"><span id="summary-level">LOW</span><strong id="summary-score">EES 31</strong></div></div>
+          <svg class="map" viewBox="0 0 960 520" role="img" aria-label="Stylized route comparison map for District 7">
+            <defs><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#d9e7e1" stroke-width="1"/></pattern></defs>
+            <rect width="960" height="520" fill="#edf5f1"/><rect width="960" height="520" fill="url(#grid)" opacity=".75"/>
+            <path class="water" d="M-20 82C137 147 194 67 334 107s256 164 414 123 190-91 245-72v132c-89-3-183 71-318 61s-235-148-376-123S67 257-20 228Z"/>
+            <g class="roads"><path d="M-35 426C159 353 241 230 422 287S727 104 997 139"/><path d="M65 548C202 350 372 460 501 301S723 287 902-35"/><path d="M0 145C206 159 265 31 426 93S737 241 989 227"/><path d="M121 26C183 191 336 150 471 190S682 425 977 373"/><path d="M272-12C341 125 329 352 570 534"/></g>
+            <g id="route-layer"></g>
+            <g class="map-marker start" transform="translate(92 448)"><circle r="17"/><path d="M-6 2 0-5l6 7v7H-6Z"/></g>
+            <g class="map-marker end" transform="translate(878 154)"><circle r="17"/><path d="M-7-7H7V7H-7Z"/><path d="M-3-2h6M-3 2h6"/></g>
+            <text x="48" y="486" class="map-label">HOME · PHU MY HUNG</text><text x="746" y="119" class="map-label">KOREA GLOBAL SCHOOL</text>
+          </svg>
+          <div class="map-legend"><span><i style="background:#0d8f6f"></i>Green corridor</span><span><i style="background:#ef665f"></i>Express</span><span><i style="background:#f1a638"></i>Canal-side</span></div>
+        </div>
+        <div class="recommendation-strip"><div><span>WHY THIS ROUTE?</span><p id="explanation"></p></div><b id="active-mode">Eco Balance</b></div>
+        <div class="route-cards" id="route-cards"></div>
+        <div class="insight-grid">
+          <section class="budget-card"><div class="section-title"><div><span>02</span><h2>Exposure Budget</h2></div><strong id="budget-total">42%</strong></div><p id="budget-status">Low daily exposure</p><div class="stacked-bar"><i id="morning-bar"></i><b id="route-bar"></b></div><div class="budget-labels"><span>Morning <b id="morning-value">28%</b></span><span>Recommended trip <b id="route-value">+14%</b></span><span id="budget-remaining">58% remaining</span></div></section>
+          <section class="weights-card"><div class="section-title"><div><span>03</span><h2>Active weights</h2></div><small>Lower EES is better</small></div><div id="weight-list"></div></section>
+        </div>
+      </section>
+    </section>
+    <p class="data-note"><b>Transparent demo:</b> Route values are illustrative sample data for a repeatable District 7 competition scenario—not live measurements or emergency guidance. A production version can connect to routing, weather, air-quality, traffic, and flood-alert APIs.</p>
+  </main>
+  <dialog id="method-dialog">
+    <button id="close-dialog" aria-label="Close scoring method">×</button>
+    <p class="eyebrow">Explainable recommendation</p><h2>Every score can be inspected</h2>
+    <p>Each route is measured on a 0–100 scale. GREENWAY AI applies the selected mode's weights, adjusts them for personal preferences and weather, normalizes them to 100%, and selects the lowest score.</p>
+    <div class="formula-box"><b>EES</b> = Air × w<sub>air</sub> + Heat × w<sub>heat</sub> + Traffic × w<sub>traffic</sub> + Flood × w<sub>flood</sub> + Time × w<sub>time</sub></div>
+    <ol><li><b>Input</b><span>Three candidate routes and five environmental factors</span></li><li><b>Personalize</b><span>Priority, travel mode, sensitivity, weather, and exposure already used</span></li><li><b>Recommend</b><span>Lowest weighted EES with a plain-language reason</span></li></ol>
+  </dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
