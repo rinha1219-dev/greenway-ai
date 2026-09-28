@@ -11,20 +11,22 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#workspace" aria-label="GREENWAY AI home"><span class="brand-mark">G</span><span>GREENWAY <b>AI</b></span></a>
-    <div class="prototype-chip"><span></span> Interactive prototype · District 7</div>
-    <button class="text-button" id="method-button">View scoring method</button>
+    <div class="prototype-chip"><span></span> Auditable prototype · District 7</div>
+    <button class="text-button" id="method-button">How the algorithm works</button>
   </header>
   <main id="workspace">
     <section class="intro-row">
       <div><p class="eyebrow">Environmental navigation for students</p><h1>A route should protect more than your time.</h1></div>
-      <p>GREENWAY AI compares travel time with pollution, heat, traffic, and flood risk—then adapts the choice to what you have already experienced today.</p>
+      <p>GREENWAY AI compares travel time with pollution, heat, traffic, and flood risk—then adapts its weights to your preferences, weather, and remaining Environmental Exposure Budget.</p>
     </section>
     <section class="app-shell">
       <aside class="control-panel" aria-label="Route settings">
         <div class="panel-heading"><span>01</span><div><h2>Plan the journey</h2><p>Try a scenario, then change what matters.</p></div></div>
-        <label class="location-field"><span>From</span><input value="Korea Global School" aria-label="Starting point" /></label>
+        <label class="journey-picker"><span>Demo journey</span><select id="journey-select" aria-label="Choose a demonstration journey"></select></label>
+        <label class="location-field"><span>From</span><strong id="from-location">Korea Global School</strong></label>
         <div class="connector-line"></div>
-        <label class="location-field"><span>To</span><input value="Phu My Hung, District 7" aria-label="Destination" /></label>
+        <label class="location-field"><span>To</span><strong id="to-location">Phu My Hung, District 7</strong></label>
+        <p class="journey-context" id="journey-context">District 7 student commute</p>
         <fieldset><legend>Demo condition</legend><div class="scenario-buttons" id="scenario-buttons"></div></fieldset>
         <fieldset><legend>Route priority</legend><div class="mode-buttons" id="mode-buttons"></div></fieldset>
         <div class="preference-block">
@@ -46,26 +48,44 @@
             <g id="route-layer"></g>
             <g class="map-marker start" transform="translate(92 448)"><circle r="17"/><path d="M-6 2 0-5l6 7v7H-6Z"/></g>
             <g class="map-marker end" transform="translate(878 154)"><circle r="17"/><path d="M-7-7H7V7H-7Z"/><path d="M-3-2h6M-3 2h6"/></g>
-            <text x="48" y="486" class="map-label">HOME · PHU MY HUNG</text><text x="746" y="119" class="map-label">KOREA GLOBAL SCHOOL</text>
+            <text x="48" y="486" class="map-label" id="map-start-label">PHU MY HUNG</text><text x="746" y="119" class="map-label" id="map-end-label">KOREA GLOBAL SCHOOL</text>
           </svg>
-          <div class="map-legend"><span><i style="background:#0d8f6f"></i>Green corridor</span><span><i style="background:#ef665f"></i>Express</span><span><i style="background:#f1a638"></i>Canal-side</span></div>
+          <div class="map-legend" id="map-legend"></div>
         </div>
         <div class="recommendation-strip"><div><span>WHY THIS ROUTE?</span><p id="explanation"></p></div><b id="active-mode">Eco Balance</b></div>
         <div class="route-cards" id="route-cards"></div>
         <div class="insight-grid">
           <section class="budget-card"><div class="section-title"><div><span>02</span><h2>Exposure Budget</h2></div><strong id="budget-total">42%</strong></div><p id="budget-status">Low daily exposure</p><div class="stacked-bar"><i id="morning-bar"></i><b id="route-bar"></b></div><div class="budget-labels"><span>Morning <b id="morning-value">28%</b></span><span>Recommended trip <b id="route-value">+14%</b></span><span id="budget-remaining">58% remaining</span></div></section>
-          <section class="weights-card"><div class="section-title"><div><span>03</span><h2>Active weights</h2></div><small>Lower EES is better</small></div><div id="weight-list"></div></section>
+          <section class="weights-card"><div class="section-title"><div><span>03</span><h2>Active weights</h2></div><small>Lower EES is better</small></div><div id="weight-list"></div><p class="weight-check" id="weight-check">✓ Normalized total: 100%</p></section>
         </div>
+        <section class="calculation-card" aria-labelledby="calculation-heading">
+          <div class="calculation-head">
+            <div><span class="overline">LIVE ALGORITHM PROOF</span><h2 id="calculation-heading">Why <b id="calculation-route">Green Corridor</b> wins</h2></div>
+            <div class="confidence"><strong id="confidence-label">High confidence</strong><span id="confidence-gap">12-point gap to second place</span></div>
+          </div>
+          <p class="calculation-intro">Every recommendation is reproducible: factor score × personalized weight = contribution. The five contributions add to the final EES.</p>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Factor</th><th>Score</th><th>Weight</th><th>Contribution</th></tr></thead>
+              <tbody id="calculation-rows"></tbody>
+              <tfoot><tr><td colspan="3">Environmental Exposure Score</td><td id="calculation-total">39.0</td></tr></tfoot>
+            </table>
+          </div>
+          <div class="audit-row">
+            <span>✓ 0–100 normalized inputs</span><span>✓ Weights total 100%</span><span>✓ Lowest score selected</span>
+            <button id="export-report">Export decision audit</button>
+          </div>
+        </section>
       </section>
     </section>
-    <p class="data-note"><b>Transparent demo:</b> Route values are illustrative sample data for a repeatable District 7 competition scenario—not live measurements or emergency guidance. A production version can connect to routing, weather, air-quality, traffic, and flood-alert APIs.</p>
+    <section class="data-note"><div><b>Transparent data policy</b><p>Route values are illustrative 0–100 sample indices for repeatable District 7 competition scenarios—not live measurements or emergency guidance.</p></div><div><b>Production-ready pathway</b><p>The same adapter structure can accept routing, weather, air-quality, traffic, and flood-alert APIs without changing the scoring engine.</p></div></section>
   </main>
   <dialog id="method-dialog">
     <button id="close-dialog" aria-label="Close scoring method">×</button>
     <p class="eyebrow">Explainable recommendation</p><h2>Every score can be inspected</h2>
-    <p>Each route is measured on a 0–100 scale. GREENWAY AI applies the selected mode's weights, adjusts them for personal preferences and weather, normalizes them to 100%, and selects the lowest score.</p>
+    <p>Each route is measured on a 0–100 scale. GREENWAY AI applies the selected mode's weights, adjusts them for personal preferences, weather, active travel, and exposure already used today, normalizes them to 100%, and selects the lowest score.</p>
     <div class="formula-box"><b>EES</b> = Air × w<sub>air</sub> + Heat × w<sub>heat</sub> + Traffic × w<sub>traffic</sub> + Flood × w<sub>flood</sub> + Time × w<sub>time</sub></div>
-    <ol><li><b>Input</b><span>Three candidate routes and five environmental factors</span></li><li><b>Personalize</b><span>Priority, travel mode, sensitivity, weather, and exposure already used</span></li><li><b>Recommend</b><span>Lowest weighted EES with a plain-language reason</span></li></ol>
+    <ol><li><b>Normalize</b><span>Convert candidate-route data into five comparable 0–100 risk indices</span></li><li><b>Personalize</b><span>Adjust mode weights using travel behavior, sensitivity, weather, and the remaining exposure budget</span></li><li><b>Score</b><span>Multiply every factor by its normalized weight and add the five contributions</span></li><li><b>Explain</b><span>Rank the routes, calculate confidence, and give a plain-language reason</span></li></ol>
   </dialog>
   <script type="module" src="./app.js"></script>
 </body>
