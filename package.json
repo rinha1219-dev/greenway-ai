@@ -1,0 +1,11 @@
+{
+  "name": "greenway-ai",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Explainable environmental route recommendation prototype for students in Ho Chi Minh City",
+  "scripts": {
+    "start": "python3 -m http.server 8000 --directory dist",
+    "test": "node tests/algorithm.test.mjs"
+  }
+}
